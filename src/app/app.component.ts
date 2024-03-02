@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
 import { CommonModule } from '@angular/common'
+import * as Highcharts from 'highcharts'
 import { data } from './data'
 import { Category, Brand, Product, Profit } from './types'
 
@@ -19,6 +20,44 @@ export class AppComponent {
   filteredProfits: Profit[] = data[0].products[0].brands[0].profit
   initialYLabel: number[] = this.filteredProfits.map(item => item.sales)
   initialXLabel: string[] = this.filteredProfits.map(item => item.month)
+
+  constructor () {}
+  ngOnInit (): void {
+    Highcharts.chart('container', this.options)
+  }
+
+  options: any = {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Sales By Month'
+    },
+    xAxis: {
+      categories: this.initialXLabel,
+      title: {
+        text: 'Months'
+      }
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Profit'
+      },
+      labels: {
+        overflow: 'justify'
+      }
+    },
+    tooltip: {
+      valuePrefix: 'R$'
+    },
+    series: [
+      {
+        name: 'Profit',
+        data: this.initialYLabel
+      }
+    ]
+  }
 
   onInputChange (target: any): void {
     let item
@@ -47,5 +86,12 @@ export class AppComponent {
       default:
         break
     }
+    this.updateChart()
+  }
+
+  updateChart (): void {
+    this.options.series[0].data = this.filteredProfits.map(item => item.sales)
+    this.options.xAxis.categories = this.filteredProfits.map(item => item.month)
+    Highcharts.chart('container', this.options)
   }
 }
