@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
 import { CommonModule } from '@angular/common'
 import * as Highcharts from 'highcharts'
@@ -12,7 +12,7 @@ import { Category, Brand, Product, Profit } from './types'
   templateUrl: './app.component.html',
   styleUrl: './app.component.sass'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = '2023 Sales Report'
   data: Category[] = data
   filteredProducts: Product[] = this.data[0].products
@@ -23,7 +23,9 @@ export class AppComponent {
 
   constructor () {}
   ngOnInit (): void {
-    Highcharts.chart('container', this.options)
+    if (typeof Highcharts.chart === 'function') {
+      Highcharts.chart('container', this.options)
+    }
   }
 
   options: any = {
