@@ -3,7 +3,26 @@
     <span> {{ title }} </span>
   </nav>
   <div class="content">
-    <p>{{ title }}</p>
+    <div class="selectors">
+      <div class="selector">
+        <span>Category: </span>
+        <select (change)="onInputChange($event.target)" name="category">
+          <option *ngFor="let option of data" [value]="option.category">{{ option.category }}</option>
+        </select>
+      </div>
+      <div class="selector">
+        <span>Product: </span>
+        <select (change)="onInputChange($event.target)" name="product">
+          <option *ngFor="let option of filteredProducts" [value]="option.product">{{ option.product }}</option>
+        </select>
+      </div>
+      <div class="selector">
+        <span>Brand: </span>
+        <select (change)="onInputChange($event.target)" name="brand">
+          <option *ngFor="let option of filteredBrands" [value]="option.brand">{{ option.brand }}</option>
+        </select>
+      </div>
+    </div>
   </div>
 </main>
 
